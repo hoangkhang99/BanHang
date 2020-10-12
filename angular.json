@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ShopBanHang"
+    }
+  },
+  "defaultProject": "ShopBanHang",
+  "cli": {
+    "analytics": false
+  }
 }
