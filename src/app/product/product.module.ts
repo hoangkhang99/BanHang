@@ -3,15 +3,21 @@ import { CommonModule } from '@angular/common';
 import { ChitietComponent } from './chitiet/chitiet.component';
 import { ListComponent } from './list/list.component';
 import { Router, RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 export const routes: Routes = [
   {
-    path: 'list',
-    component: ListComponent,
-  },
-  {
-    path: 'list/chitiet/:id',
-    component: ChitietComponent,
+    path: '',
+    children: [
+      {
+        path: '',
+        component: ListComponent
+      },
+      {
+        path: 'chitiet/:id',
+        component: ChitietComponent
+      }
+    ]
   }
 ]
 
@@ -19,6 +25,7 @@ export const routes: Routes = [
   declarations: [ChitietComponent, ListComponent,],
   imports: [
     CommonModule,
+    HttpClientModule,
     RouterModule.forChild(routes)
   ],
   exports: [

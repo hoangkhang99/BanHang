@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import {ApiService} from 'src/app/lib/api.service'
+import { product } from 'src/app/model1/product';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  products:product[];
+  constructor(private apiService: ApiService ) { }
 
   ngOnInit(): void {
+ 
+    this.apiService.getAll().subscribe(
+      (response) => {
+        this.products = response;
+        debugger
+      },
+    
+    );
   }
 
 }
