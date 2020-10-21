@@ -1,16 +1,76 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+@Injectable({
+  providedIn: 'root',
+})
 
-import { CartService } from './cart.service';
+export class CartService {
+  private itemsSubject = new BehaviorSubject<any[]>([]);
+  items = this.itemsSubject.asObservable();
+  constructor() {
+    let local_storage = JSON.parse(localStorage.getItem('cart'));
+    if (!local_storage) {
+      local_storage = [];
+    }
+    this.itemsSubject.next(local_storage); 
+  }
+  
+  addToCart(item) {
+    item.quantity = 1;
+    let local_storage:any;
+    if (localStorage.getItem('cart') == null) {
+      local_storage = [item];
+    } else {
+      local_storage = JSON.parse(localStorage.getItem('cart'));
+      let ok = true;
+      for (let x of local_storage) {
+        if (x.item_id == item.item_id) {
+          x.quantity += 1;
+          ok = false;
+          break;
+        }
+      }
+      if(ok){
+        local_storage.push(item); 
+      } 
+    }
+    localStorage.setItem('cart', JSON.stringify(local_storage));
+    this.itemsSubject.next(local_storage);
+  }
 
-describe('CartService', () => {
-  let service: CartService;
+  getItems() {
+    if (localStorage.getItem('cart') == null) {
+      return [];
+    } else {
+      return JSON.parse(localStorage.getItem('cart'));
+    }
+  }
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CartService);
-  });
+  deleteItem(item_id) {
+    let local_storage = this.getItems().filter((x) => x.item_id != item_id);
+    localStorage.setItem('cart', JSON.stringify(local_storage));
+    this.itemsSubject.next(local_storage);
+  }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  addQty(item) {
+    let local_storage = JSON.parse(localStorage.getItem('cart'));
+    for (let x of local_storage) {
+      if (x.item_id == item.item_id) {
+        x.quantity = item.quantity;
+        break;
+      }
+    }
+    localStorage.setItem('cart', JSON.stringify(local_storage));
+    this.itemsSubject.next(local_storage);
+  }
+
+  numberOfItems() {
+    let local_storage = JSON.parse(localStorage.getItem('cart'));
+    return local_storage.length;
+  }
+
+  clearCart() {
+   localStorage.clear();
+   this.itemsSubject.next(null);
+  }
+}

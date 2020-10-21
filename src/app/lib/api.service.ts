@@ -16,6 +16,10 @@ export class ApiService  {
       this.host
     );
     }
+  GetbyId(id){
+    const url=`${this.host}/${id}`;
+    return this.http.get(url);
+  }
   getaaaa():Observable<product[]> {
     debugger;
   return  this.http.get<product[]>(this.host).pipe(
@@ -25,8 +29,4 @@ export class ApiService  {
      }),
   );
  }
-
-
-  
-
 }

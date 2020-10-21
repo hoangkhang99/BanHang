@@ -3,12 +3,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
-import { MainModule } from './main/main.module';
 import {FooterComponent} from './shares/footer/footer.component'
 import { MenuComponent } from './shares/menu/menu.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ProductModule } from './product/product.module';
 import { CustomerModule } from './customer/customer.module';
+import { CommonModule } from '@angular/common';
+import { MainModule } from './main/main.module';
 
 
 @NgModule({
@@ -19,8 +20,9 @@ import { CustomerModule } from './customer/customer.module';
   ],
   imports: [
     BrowserModule,
-    MainModule,
+    CommonModule,
     AppRoutingModule,
+    MainModule,
     ProductModule,
     CustomerModule
   ],
